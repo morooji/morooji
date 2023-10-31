@@ -2,27 +2,29 @@ from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml import Pipeline
 from pyspark.sql.functions import col
 from pyspark.ml.classification import GBTClassifier # No native CatBoost in PySpark
-
+df_sub=df.select(categorical_columns+['MOMENT'])
 # 1. String Indexing
-indexers = [StringIndexer(inputCol=column, outputCol=column+"_index").fit(df) for column in ["A", "B", "C", "Label"]]
+indexers = [StringIndexer(inputCol=column, outputCol=column+"_index").fit(df_sub) for column in df_sub.columns]
 
 # 2. Vector Assembling
-feature_columns = ["A_index", "B_index", "C_index"]
+feature_columns=[clm_name+'_index' for clm_name in categorical_columns]
 assembler = VectorAssembler(inputCols=feature_columns, outputCol="features")
 
 # 3. Pipeline for transformations
 pipeline = Pipeline(stages=indexers + [assembler])
-df_transformed = pipeline.fit(df).transform(df)
+df_transformed = pipeline.fit(df_sub).transform(df_sub)
 
 # 4. Splitting Data
 (training_data, test_data) = df_transformed.randomSplit([0.8, 0.2])
 
 # 5. Train a Gradient Boosting (or any other classifier, as CatBoost is not natively supported in PySpark)
-gbt = GBTClassifier(labelCol="Label_index", featuresCol="features", maxIter=10)
+gbt = GBTClassifier(labelCol="MOMENT_index", featuresCol="features", maxIter=10)
 model = gbt.fit(training_data)
 
 # 6. Model Evaluation
 predictions = model.transform(test_data)
-predictions.select("prediction", "Label_index", "features").show(5)
+predictions.select("prediction", "MOMENT_index", "features").show(5)
 
 # You might want to add an evaluation metric here based on your requirements, like accuracy, precision, recall, etc.
+
+org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 254.0 failed 4 times, most recent failure: Lost task 0.3 in stage 254.0 (TID 1377) (172.23.49.21 executor 0): org.apache.spark.SparkException: [FAILED_EXECUTE_UDF] Failed to execute user defined function (StringIndexerModel$$Lambda$10393/1983100126: (string) => double).
