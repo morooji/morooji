@@ -1,11 +1,51 @@
-from pyspark.ml.feature import VectorAssembler
+from pyspark.sql.functions import col
+from catboost import CatBoostClassifier, Pool
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import StringIndexer
+from pyspark.sql.functions import rand
 
-# Define the input columns for the VectorAssembler, which could be the columns you're interested in
-input_cols = ["DEPARTMENT", "OTHER", "SALE"]
+# Initialize Spark Session
+spark = SparkSession.builder \
+    .appName('CatBoost with Spark') \
+    .getOrCreate()
 
-# Initialize VectorAssembler
-assembler = VectorAssembler(inputCols=input_cols, outputCol="features")
+# Assuming df is your DataFrame
+df = df.orderBy(rand())  # Shuffle the data
 
-# Transform the data
-X_train = assembler.transform(X_train)
-X_test = assembler.transform(X_test)
+# Splitting the data
+(train_df, test_df) = df.randomSplit([0.8, 0.2])
+
+# Convert Spark DataFrame to Pandas DataFrame for CatBoost
+train_pd = train_df.toPandas()
+test_pd = test_df.toPandas()
+
+# Separate features and target variable in training data
+X_train = train_pd[['A', 'B', 'C']]
+y_train = train_pd['Label']
+
+# Separate features and target variable in test data
+X_test = test_pd[['A', 'B', 'C']]
+y_test = test_pd['Label']
+
+# Specify categorical features indices
+cat_features = [0, 1, 2]
+
+# Initialize CatBoostClassifier
+model = CatBoostClassifier(iterations=500,
+                          depth=10,
+                          learning_rate=0.05,
+                          loss_function='Logloss',
+                          cat_features=cat_features,
+                          verbose=200)
+
+# Train model
+model.fit(X_train, y_train)
+
+# Make predictions
+preds_class = model.predict(X_test)
+preds_proba = model.predict_proba(X_test)
+
+# Calculate accuracy
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test, preds_class)
+print(f'Accuracy: {accuracy}')
