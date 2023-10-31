@@ -28,3 +28,4 @@ predictions.select("prediction", "MOMENT_index", "features").show(5)
 # You might want to add an evaluation metric here based on your requirements, like accuracy, precision, recall, etc.
 
 org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 254.0 failed 4 times, most recent failure: Lost task 0.3 in stage 254.0 (TID 1377) (172.23.49.21 executor 0): org.apache.spark.SparkException: [FAILED_EXECUTE_UDF] Failed to execute user defined function (StringIndexerModel$$Lambda$10393/1983100126: (string) => double).
+org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 296.0 failed 4 times, most recent failure: Lost task 0.3 in stage 296.0 (TID 1411) (172.23.49.209 executor 1): java.lang.RuntimeException: Labels MUST be in {0, 1}, but got 2.0
