@@ -1,31 +1,30 @@
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml import Pipeline
-from pyspark.sql.functions import col
-from pyspark.ml.classification import GBTClassifier # No native CatBoost in PySpark
-df_sub=df.select(categorical_columns+['MOMENT'])
+from pyspark.ml.classification import RandomForestClassifier
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+
 # 1. String Indexing
-indexers = [StringIndexer(inputCol=column, outputCol=column+"_index").fit(df_sub) for column in df_sub.columns]
+indexers = [StringIndexer(inputCol=column, outputCol=column+"_index").fit(df) for column in categorical_columns + ["MOMENT"]]
 
 # 2. Vector Assembling
-feature_columns=[clm_name+'_index' for clm_name in categorical_columns]
+feature_columns = [clm+"_index" for clm in categorical_columns]
 assembler = VectorAssembler(inputCols=feature_columns, outputCol="features")
 
 # 3. Pipeline for transformations
 pipeline = Pipeline(stages=indexers + [assembler])
-df_transformed = pipeline.fit(df_sub).transform(df_sub)
+df_transformed = pipeline.fit(df).transform(df)
 
 # 4. Splitting Data
 (training_data, test_data) = df_transformed.randomSplit([0.8, 0.2])
 
-# 5. Train a Gradient Boosting (or any other classifier, as CatBoost is not natively supported in PySpark)
-gbt = GBTClassifier(labelCol="MOMENT_index", featuresCol="features", maxIter=10)
-model = gbt.fit(training_data)
+# 5. Train a Random Forest Classifier
+rf_classifier = RandomForestClassifier(labelCol="MOMENT_index", featuresCol="features", numClasses=8)
+model = rf_classifier.fit(training_data)
 
 # 6. Model Evaluation
 predictions = model.transform(test_data)
-predictions.select("prediction", "MOMENT_index", "features").show(5)
+evaluator = MulticlassClassificationEvaluator(labelCol="MOMENT_index", predictionCol="prediction", metricName="accuracy")
+accuracy = evaluator.evaluate(predictions)
+print(f"Test Accuracy = {accuracy}")
 
-# You might want to add an evaluation metric here based on your requirements, like accuracy, precision, recall, etc.
-
-org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 254.0 failed 4 times, most recent failure: Lost task 0.3 in stage 254.0 (TID 1377) (172.23.49.21 executor 0): org.apache.spark.SparkException: [FAILED_EXECUTE_UDF] Failed to execute user defined function (StringIndexerModel$$Lambda$10393/1983100126: (string) => double).
-org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 296.0 failed 4 times, most recent failure: Lost task 0.3 in stage 296.0 (TID 1411) (172.23.49.209 executor 1): java.lang.RuntimeException: Labels MUST be in {0, 1}, but got 2.0
+# You might also want to add other evaluation metrics here based on your requirements, like f1 score, precision, recall, etc.
