@@ -1,57 +1,3 @@
-from pyspark.sql.functions import col
-from catboost import CatBoostClassifier, Pool
-from pyspark.sql import SparkSession
-from pyspark.ml.feature import StringIndexer
-from pyspark.sql.functions import rand
-
-# Initialize Spark Session
-spark = SparkSession.builder \
-    .appName('CatBoost with Spark') \
-    .getOrCreate()
-
-# Assuming df is your DataFrame
-df = df.orderBy(rand())  # Shuffle the data
-
-# Splitting the data
-(train_df, test_df) = df.randomSplit([0.8, 0.2])
-
-# Convert Spark DataFrame to Pandas DataFrame for CatBoost
-train_pd = train_df.toPandas()
-test_pd = test_df.toPandas()
-
-# Separate features and target variable in training data
-X_train = train_pd[['A', 'B', 'C']]
-y_train = train_pd['Label']
-
-# Separate features and target variable in test data
-X_test = test_pd[['A', 'B', 'C']]
-y_test = test_pd['Label']
-
-# Specify categorical features indices
-cat_features = [0, 1, 2]
-
-# Initialize CatBoostClassifier
-model = CatBoostClassifier(iterations=500,
-                          depth=10,
-                          learning_rate=0.05,
-                          loss_function='Logloss',
-                          cat_features=cat_features,
-                          verbose=200)
-
-# Train model
-model.fit(X_train, y_train)
-
-# Make predictions
-preds_class = model.predict(X_test)
-preds_proba = model.predict_proba(X_test)
-
-# Calculate accuracy
-from sklearn.metrics import accuracy_score
-accuracy = accuracy_score(y_test, preds_class)
-print(f'Accuracy: {accuracy}')
-
-#-------------- SPARK ----------------------
-
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml import Pipeline
 from pyspark.sql.functions import col
@@ -80,4 +26,3 @@ predictions = model.transform(test_data)
 predictions.select("prediction", "Label_index", "features").show(5)
 
 # You might want to add an evaluation metric here based on your requirements, like accuracy, precision, recall, etc.
-
