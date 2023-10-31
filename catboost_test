@@ -1,0 +1,11 @@
+from pyspark.ml.feature import VectorAssembler
+
+# Define the input columns for the VectorAssembler, which could be the columns you're interested in
+input_cols = ["DEPARTMENT", "OTHER", "SALE"]
+
+# Initialize VectorAssembler
+assembler = VectorAssembler(inputCols=input_cols, outputCol="features")
+
+# Transform the data
+X_train = assembler.transform(X_train)
+X_test = assembler.transform(X_test)
