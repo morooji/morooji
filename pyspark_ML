@@ -1,0 +1,4 @@
+from pyspark.ml.classification import CatBoostClassifier
+classifier = CatBoostClassifier(iterations=100, learningRate=0.01)
+model = classifier.fit(trainPool)
+predictions = model.transform(testPool)
