@@ -1,0 +1,84 @@
+df_test = final_test
+print('Data Schema is:')
+print (df_test.printSchema())
+'''
+root
+ |-- TRANSACTION_ID: long (nullable = true)
+ |-- DEPARTMENT: string (nullable = true)
+ |-- ITEMS_TOTAL: double (nullable = true)
+ |-- OTHER_DEPARTMENTS: string (nullable = true)
+ |-- NET_SALES: double (nullable = true)
+ |-- HourofDay: long (nullable = true)
+ |-- Dayofweek: long (nullable = true)
+
+Note: Despite training data It doesn't have
+ |-- MOMENT: string (nullable = true)
+ |-- BANNER_ID: string (nullable = true)
+
+'''
+
+# Calculate average sales per day of week
+avg_sales_per_dow = df_test.groupBy('Dayofweek').agg(F.avg("NET_SALES").alias("AVG_SALES_DOW"))
+
+# Merge these statistics back to the original dataframe
+df_test=df_test.join(avg_sales_per_dow, on="Dayofweek", how='left')
+
+# Calculate average sales per hour of day
+avg_sales_per_hour = df_test.groupBy('HourofDay').agg(F.avg("NET_SALES").alias("AVG_SALES_HOUR"))
+
+# Merge these statistics back to the original dataframe
+df_test=df_test.join(avg_sales_per_hour, on="HourofDay", how='left')
+
+# Binning NET_SALES
+Levels_test=df_test.stat.approxQuantile('NET_SALES',[0.25,0.5,0.75],0.0)
+df_test=df_test.withColumn("SALES_BIN",
+                        when(df_test["NET_SALES"] <= Levels_test[0], F.lit("low"))
+                        .when((df_test["NET_SALES"] > Levels_test[0]) & (df_test["NET_SALES"] <= Levels_test[1]), F.lit("medium"))
+                        .when((df_test["NET_SALES"] > Levels_test[1]) & (df_test["NET_SALES"] <= Levels_test[2]), F.lit("high"))
+                        .otherwise(F.lit("very high"))
+                        )
+
+
+# Add the new feature 'Total_Departments'
+def Total_Departments_counter(Department):
+    if Department==None: return 0
+    return len(Department.split('_'))
+Total_Departments_counter_UDF=udf(Total_Departments_counter, returnType=IntegerType())
+df_test=df_test.withColumn('Total_Departments',Total_Departments_counter_UDF(df_test["OTHER_DEPARTMENTS"]))
+
+# Dropping the columns
+df_test = df_test.drop('ITEMS_TOTAL')
+'''
+# Encoding target variable and create a mapping
+# Dist_Moment_DF=df_test.select("MOMENT").distinct()
+# Dist_Moment=[row.MOMENT for row in Dist_Moment_DF.collect()]
+# moment_mapping = {value: str(idx) for idx, value in enumerate(Dist_Moment)}
+# df_test=df_test.replace(to_replace=moment_mapping,subset=['MOMENT'])
+'''
+
+# Specifying the categorical columns
+def find_string_column(df):
+    return [i for i,f in enumerate(df.schema.fields) if isinstance(f.dataType,StringType)],[f.name for i,f in enumerate(df.schema.fields) if isinstance(f.dataType,StringType)]
+cat_features_indices,categorical_columns=find_string_column(df_test)
+
+# Removing "MOMENT" from "categorical_columns" variable
+categorical_columns,cat_features_indices=zip(*[(categorical_columns[i],cat_features_indices[i]) for i in range(len(categorical_columns)) if categorical_columns[i]!='MOMENT'])
+categorical_columns=list(categorical_columns)
+cat_features_indices=list(cat_features_indices)
+
+# selecting the columns that we want to testing and training, and label column
+df_test_sub=df_test.select(categorical_columns+['TRANSACTION_ID'])
+df_test_sub.printSchema()
+# df_sub=df_sub.na.drop(subset=categorical_columns+['MOMENT'])
+# df_sub=df_sub.na.fill(value='NODEPARTMENT')
+df_test_sub=df_test_sub.na.fill(value='NODEPARTMENT',subset='OTHER_DEPARTMENTS')
+# temp_=df_test_sub.filter(df_test_sub['OTHER_DEPARTMENTS']=='NODEPARTMENT')
+# print(df_test_sub.count())
+# print (temp_.count())
+
+
+df_pf=df_test_sub.filter(F.col('TRANSACTION_ID')=='4114502597').toPandas()
+df_pf[list(df_pf.columns)] = df_pf[list(df_pf.columns)].astype(str)
+test_pool = cb.Pool(df_pf)
+
+CatBoostError: Bad value for num_feature[non_default_doc_idx=0,feature_idx=0]="BAKERY": Cannot convert 'b'BAKERY'' to float
