@@ -1,0 +1,46 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import pandas_udf, PandasUDFType
+import pandas as pd
+import catboost as cb
+from pyspark.sql.types import StructType, StructField, FloatType
+
+# Initialize a Spark session
+spark = SparkSession.builder.appName("catboost_spark").getOrCreate()
+
+# Assuming `cb_model` is your trained CatBoost model
+# Save your trained CatBoost model to a file (you can also serialize it to a byte stream)
+cb_model.save_model('catboost_model.bin')
+
+# Broadcast the serialized model file to the executors
+model_broadcast = spark.sparkContext.broadcast('catboost_model.bin')
+
+# Define the schema of the output of your pandas UDF
+# The schema should match the expected output of the CatBoost model (e.g., probabilities, raw scores, etc.)
+result_schema = StructType([
+    StructField("prediction", FloatType())
+])
+
+# Define the pandas UDF
+@pandas_udf(result_schema, PandasUDFType.SCALAR_ITER)
+def apply_catboost(iterator: Iterator[pd.Series]) -> Iterator[pd.Series]:
+    # Load the CatBoost model on the worker node
+    model_path = model_broadcast.value
+    loaded_model = cb.CatBoostClassifier()
+    loaded_model.load_model(model_path)
+
+    # Apply the model to each partition's pandas DataFrame
+    for args in iterator:
+        pdf = pd.concat(args, axis=1)
+        # Make sure to align the model input data structure with the DataFrame structure
+        predictions = loaded_model.predict_proba(pdf)[:, 1]  # for binary classification, getting the probability of class 1
+        yield pd.Series(predictions)
+
+# Assuming `df` is your Spark DataFrame to which you want to apply the model
+# Apply the UDF using `applyInPandas`
+result_df = df.applyInPandas(apply_catboost, schema=result_schema)
+
+# Now you can show results or perform further operations
+result_df.show()
+
+# Stop the Spark session
+spark.stop()
