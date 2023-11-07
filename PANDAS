@@ -1,0 +1,7 @@
+unique_basket_values = df[['TRANSACTION_ID', 'Dayofweek', 'HourofDay', 'DEPARTMENT_SECTIONS', 'MOMENT']].drop_duplicates()
+
+# Merge additional columns from the original DataFrame
+pivot = grouped.merge(unique_basket_values, on='TRANSACTION_ID', how='left')
+
+# Fill missing values with 0
+pivot.fillna(0, inplace=True)
