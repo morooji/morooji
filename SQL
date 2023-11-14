@@ -1,0 +1,3 @@
+select t1.*, t2.item_dsc, t2.INTERNET_ITEM_DSC, t2.department_nm
+from (select upc_id from edm_views_prd.dw_edw_views.txn_facts where item_qty > 0) t1
+left join edm_views_prd.dw_views.D1_UPC t2 on t1.upc_id = t2.upc_nbr);
