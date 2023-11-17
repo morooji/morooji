@@ -1,0 +1,22 @@
+net.snowflake.client.jdbc.SnowflakeSQLException: Statement reached its statement or warehouse timeout of 7,200 second(s) and was canceled.
+---------------------------------------------------------------------------
+Py4JJavaError                             Traceback (most recent call last)
+<command-3188736876443362> in <module>
+----> 1 write_snowflake(train_filtered, 'temp_df_train_filtered', EDMOptions_PRD)
+
+<command-485734262807174> in write_snowflake(sdf, table_name, options, write_mode)
+      9 
+     10 def write_snowflake(sdf, table_name, options, write_mode="overwrite"):
+---> 11   sdf.write\
+     12   .mode(write_mode)\
+     13   .format("snowflake")\
+
+/databricks/spark/python/pyspark/sql/readwriter.py in save(self, path, format, mode, partitionBy, **options)
+   1132             self.format(format)
+   1133         if path is None:
+-> 1134             self._jwrite.save()
+   1135         else:
+   1136             self._jwrite.save(path)
+
+/databricks/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py in __call__(self, *args)
+   1302 
