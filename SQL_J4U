@@ -1,0 +1,160 @@
+---------------------
+-- Base table
+---------------------
+
+select * from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW"  limit 5;
+
+-- Identify the subset of J4U registered we will analyze
+select * from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" 
+where TIME_PERIOD_FLG = 'LTV'      -- this is the period of interest, we are always looking at this subset
+      and J4U_REGISTERED_FLG = 1   -- identifies HH who are J4U registered
+      and datediff('day', START_DT_TIME_PERIOD, FIRST_TXN_DATE) < 0 -- means active before the LTV period   
+	  and total_txns > 10 -- have at least 10 txns
+limit 5;
+
+	-- conditions to know
+      -- J4U_REDEMPTIONS_FLG = 1 : identifies redeemer
+	  -- J4U_REDEMPTIONS_FLG = 0 : identifies non redeemers
+	  
+	  -- (greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) > 0) : identifies web/app users
+	  -- not(greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) > 0) : identifies those who do not use web/app
+   
+------------------------------------------------------------------------------------------------------------------
+-- sample query to identify number of trxns from a given department -- I don't think you need to do this again
+------------------------------------------------------------------------------------------------------------------
+
+select 'grocery' as dept_,
+       count(1) as nHH_all, 
+       avg(100*TXNS_GROCERY/TOTAL_TXNS) as p_avg,
+       approx_percentile(100*TXNS_GROCERY/TOTAL_TXNS, 0.05) as q05, approx_percentile(100*TXNS_GROCERY/TOTAL_TXNS, 0.20) as q20,
+       approx_percentile(100*TXNS_GROCERY/TOTAL_TXNS, 0.80) as q80, approx_percentile(100*TXNS_GROCERY/TOTAL_TXNS, 0.90) as q90, approx_percentile(100*TXNS_GROCERY/TOTAL_TXNS, 0.95) as q95
+from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW"  t1
+where t2.J4U_REDEMPTIONS_FLG = 0 
+      and greatest(coalesce(t2.TOTAL_SITE_VISITS,0), coalesce(t2.TOTAL_APP_VISITS,0)) > 0 ;
+	  
+--------------------------------------------------------------------------------------------
+-- break down of redeemeers and no redeemers by HH segments	  
+   -- can use any of these : (1) FACT_SEGMENT_END_WEEK_NBR_SEGMENT_STATUS_CD, 
+   --                        (2) SHOPSTYLES_SEGMENT_DSC, 
+   --                        (3)MYNEED_SEGMENT_DSC
+--------------------------------------------------------------------------------------------
+
+with 
+
+-- segment definition from C360 tables
+hh_profile as (
+  select distinct household_id, SHOPSTYLES_SEGMENT_DSC as segment, row_number() over (partition by household_id order by week_id desc) as rnk_                      
+  from EDM_VIEWS_PRD.DW_VIEWS.C360_CUSTOMER_SEGMENTS 
+  where week_id='202308'  -- segements are assigned to HH every week, so choose appropriate period
+),
+
+-- redeemers who visit web/app
+reg_red_str as (
+select distinct household_id
+from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" 
+where TIME_PERIOD_FLG = 'LTV' and J4U_REGISTERED_FLG = 1 and J4U_REDEMPTIONS_FLG = 1 and total_txns > 10 and greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) = 0 and datediff('day', START_DT_TIME_PERIOD, FIRST_TXN_DATE) < 0
+where J4U_REDEMPTIONS_FLG = 1 and greatest(coalesce(TOTAL_SITE_VISITS,0), coalesce(TOTAL_APP_VISITS,0)) > 0 
+),
+
+-- non-redeemers who visit web/app
+reg_nonred_str as (
+select distinct household_id
+from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" 
+where TIME_PERIOD_FLG = 'LTV' and J4U_REGISTERED_FLG = 1 and J4U_REDEMPTIONS_FLG = 0 and total_txns > 10 and greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) = 0 and datediff('day', START_DT_TIME_PERIOD, FIRST_TXN_DATE) < 0
+where J4U_REDEMPTIONS_FLG = 0 and  greatest(coalesce(TOTAL_SITE_VISITS,0), coalesce(TOTAL_APP_VISITS,0)) > 0
+),
+
+reg_red_str_stats as (
+select segment, count(1) as n_reg_red_str
+from reg_red_str t1
+left join hh_profile2 t2 on t1.household_id = t2.household_id and t2.rnk_=1
+group by 1          
+),
+
+reg_nonred_str_stats as (
+select segment, count(1) as n_reg_nonred_str
+from reg_nonred_str t1
+left join hh_profile2 t2 on t1.household_id = t2.household_id and t2.rnk_=1
+group by 1          
+)
+
+select t1.segment as seg1, t2.segment as seg2, coalesce(t1.n_reg_red_str,0) as n_reg_red_str, coalesce(t2.n_reg_nonred_str,0) as n_reg_nonred_str
+from reg_red_str_stats t1
+full join reg_nonred_str_stats t2 on t1.segment = t2.segment
+;
+
+-------------------------------------------
+-- clipping behavior (1) 
+   -- use CLICK_STREAM_VISIT_INTERACTIONS
+   -- %HH who have at least 1 coupon clip
+-------------------------------------------
+with
+map_ as (
+SELECT household_id,LOYALTY_PROGRAM_CARD_NBR
+FROM EDM_VIEWS_PRD.DW_VIEWS.smv_retail_customer_loyalty_program_household
+WHERE ONLINE_ENROLLMENT_STATUS_VALUE_TXT <> 'N/A'
+      AND LOYALTY_PROGRAM_CARD_NBR NOT LIKE '%-%'
+),
+      
+-- redeemers who visit web/app
+reg_red_str as (
+select household_id
+from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" 
+where TIME_PERIOD_FLG = 'LTV' and J4U_REGISTERED_FLG = 1 and J4U_REDEMPTIONS_FLG = 0 and total_txns > 10 and greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) = 0 and datediff('day', START_DT_TIME_PERIOD, FIRST_TXN_DATE) < 0
+where J4U_REDEMPTIONS_FLG = 1 and  greatest(coalesce(TOTAL_SITE_VISITS,0), coalesce(TOTAL_APP_VISITS,0)) > 0
+limit 1000000 -- i limited to 1M HHs, otherwise query takes for ever
+)
+
+
+select 100*sum(coupon_flag)/count(household_id) 
+from (select t1.household_id, 
+             iff(max(coupon_clip_cnt) > 0,1,0) as coupon_flag  -- coupon_clip_cnt = number of coupons clipped in the session
+      from reg_red_str t1
+      inner join "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" t4 on t1.household_id = t4.household_id and TIME_PERIOD_FLG='LTV' 
+      left join map_ t2 on t1.household_id = t2.household_id
+      left join EDM_VIEWS_PRD.DW_VIEWS.CLICK_STREAM_VISIT_INTERACTIONS t3 on t2.LOYALTY_PROGRAM_CARD_NBR = t3.club_card_nbr_txt and t3.visit_dt between t4.START_DT_TIME_PERIOD and t4.END_DT_TIME_PERIOD
+      group by t1.household_id
+     ) s
+;
+
+
+--------------------------------------------------------------
+-- clipping behavior (2) 
+   -- use CLICK_STREAM_VISIT_INTERACTIONS
+   -- for a given HH, what %sessions which have a coupon clip
+--------------------------------------------------------------
+
+with
+map_ as (
+SELECT household_id,LOYALTY_PROGRAM_CARD_NBR
+FROM EDM_VIEWS_PRD.DW_VIEWS.smv_retail_customer_loyalty_program_household
+WHERE ONLINE_ENROLLMENT_STATUS_VALUE_TXT <> 'N/A'
+      AND LOYALTY_PROGRAM_CARD_NBR NOT LIKE '%-%'
+),
+      
+-- redeemers who visit web/app
+reg_red_str as (
+select household_id
+from "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" 
+where TIME_PERIOD_FLG = 'LTV' and J4U_REGISTERED_FLG = 1 and J4U_REDEMPTIONS_FLG = 0 and total_txns > 10 and greatest(TOTAL_SITE_VISITS_FLG, TOTAL_APP_VISITS_FLG) = 0 and datediff('day', START_DT_TIME_PERIOD, FIRST_TXN_DATE) < 0
+where J4U_REDEMPTIONS_FLG = 1 and  greatest(coalesce(TOTAL_SITE_VISITS,0), coalesce(TOTAL_APP_VISITS,0)) > 0
+limit 1000000 -- i limited to 1M HHs, otherwise query takes for ever
+)
+
+select avg(p_session_coupn), -- disbn over all HH
+       approx_percentile(100*p_session_coupn, 0.05) as q05, approx_percentile(100*p_session_coupn, 0.20) as q20,
+       approx_percentile(100*p_session_coupn, 0.80) as q80, approx_percentile(100*p_session_coupn, 0.90) as q90, approx_percentile(100*p_session_coupn, 0.95) as q95
+from (select household_id, 
+             avg(coupon_flag) as p_session_coupn -- % sessions for this HH which had a coupon clip
+	  from (select t1.household_id, t3.visit_id, 
+	               iff(max(coupon_clip_cnt) > 0,1,0) as coupon_flag -- was a coupon clippled in this session
+		    from reg_red_str t1
+		    inner join "EDM_VIEWS_PRD"."DW_DATASCIENCE_VIEWS"."MCKINSEY_CLV_INPUTDATA_MASTER_VIEW" t4 on t1.household_id = t4.household_id and TIME_PERIOD_FLG='LTV' 
+		    left join map_ t2 on t1.household_id = t2.household_id
+		    left join EDM_VIEWS_PRD.DW_VIEWS.CLICK_STREAM_VISIT_INTERACTIONS t3 on t2.LOYALTY_PROGRAM_CARD_NBR = t3.club_card_nbr_txt and t3.visit_dt between t4.START_DT_TIME_PERIOD and t4.END_DT_TIME_PERIOD
+		    group by t1.household_id, t3.visit_id
+		   ) s
+	  group by household_id
+	 ) a
+;
+	  
