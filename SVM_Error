@@ -1,0 +1,124 @@
+from pyspark.ml.classification import LinearSVC
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+from pyspark.ml.feature import VectorAssembler
+from pyspark.mllib.evaluation import BinaryClassificationMetrics
+import matplotlib.pyplot as plt
+
+# tx_facts_R=tx_facts.filter(F.col('hh_tag')=='Redeemeer')
+# tx_facts_NR_NC=tx_facts.filter(F.col('hh_tag')=='nonRedeemeer_nonClipper')
+# tx_facts_NR_C=tx_facts.filter(F.col('hh_tag')=='nonRedeemeer_Clipper')
+
+tx_facts=tx_facts.withColumn('label',
+                              when (F.col('hh_tag')=='Redeemeer',1)
+                             .when ((F.col('hh_tag')=='nonRedeemeer_nonClipper')|(F.col('hh_tag')=='nonRedeemeer_Clipper'),0))
+
+subset1 = tx_facts.filter(F.col('hh_tag')=='Redeemeer')
+subset2 = tx_facts.filter((F.col('hh_tag')=='nonRedeemeer_nonClipper')|(F.col('hh_tag')=='nonRedeemeer_Clipper'))
+
+#-- Feature Engineering, First try: Just considering one feature per class
+ftr_vector=['avg_txn_per_week','std_txn_per_week']
+assembler = VectorAssembler(inputCols=ftr_vector, outputCol="ftr")
+subset1 = assembler.transform(subset1)
+subset2 = assembler.transform(subset2)
+
+#-- Define classifier model:
+svm = LinearSVC(labelCol="label", featuresCol="ftr")
+
+#-- k-fold cross validation for k=5 
+paramGrid = ParamGridBuilder().addGrid(svm.regParam, [0.1, 0.01]).build()
+crossval = CrossValidator(estimator=svm,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=BinaryClassificationEvaluator(),
+                          numFolds=5)
+
+#-- Fit Model
+model1 = crossval.fit(subset1)
+model2 = crossval.fit(subset2)
+
+
+
+requirement failed: LinearSVC only supports binary classification. 1 classes detected in LinearSVC_b455cfb4ac33__labelCol
+
+
+'''
+root
+ |-- household_id: decimal(38,0) (nullable = true)
+ |-- txn_per_week: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- avg_txn_per_week: double (nullable = true)
+ |-- std_txn_per_week: double (nullable = true)
+ |-- num_active_week: long (nullable = true)
+ |-- txn_per_month: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- avg_txn_per_month: double (nullable = true)
+ |-- std_txn_per_month: double (nullable = true)
+ |-- num_active_month: long (nullable = true)
+ |-- total_txn_hh: long (nullable = true)
+ |-- day_diff: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- avg_day_diff: double (nullable = true)
+ |-- std_day_diff: double (nullable = true)
+ |-- all_txn_dte: array (nullable = true)
+ |    |-- element: date (containsNull = true)
+ |-- all_txn_day_before: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- last_txn_dte: date (nullable = true)
+ |-- last_txn_day_before: integer (nullable = true)
+ |-- hh_tag: string (nullable = true)
+'''
+'''
+tags:
+nonRedeemeer_nonClipper
+Redeemeer
+nonRedeemeer_Clipper
+'''
+
+from pyspark.ml.classification import LinearSVC
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+from pyspark.ml.feature import VectorAssembler
+from pyspark.mllib.evaluation import BinaryClassificationMetrics
+import matplotlib.pyplot as plt
+
+# tx_facts_R=tx_facts.filter(F.col('hh_tag')=='Redeemeer')
+# tx_facts_NR_NC=tx_facts.filter(F.col('hh_tag')=='nonRedeemeer_nonClipper')
+# tx_facts_NR_C=tx_facts.filter(F.col('hh_tag')=='nonRedeemeer_Clipper')
+
+tx_facts=tx_facts.withColumn('label',
+                              when (F.col('hh_tag')=='Redeemeer',1)
+                             .when ((F.col('hh_tag')=='nonRedeemeer_nonClipper')|(F.col('hh_tag')=='nonRedeemeer_Clipper'),0))
+
+subset1 = tx_facts.filter(F.col('hh_tag')=='Redeemeer')
+subset2 = tx_facts.filter((F.col('hh_tag')=='nonRedeemeer_nonClipper')|(F.col('hh_tag')=='nonRedeemeer_Clipper'))
+
+#-- Feature Engineering, First try: Just considering one feature per class
+ftr_vector=['avg_txn_per_week','std_txn_per_week']
+assembler = VectorAssembler(inputCols=ftr_vector, outputCol="ftr")
+subset1 = assembler.transform(subset1)
+subset2 = assembler.transform(subset2)
+
+#-- Define classifier model:
+svm = LinearSVC(labelCol="label", featuresCol="ftr")
+
+#-- k-fold cross validation for k=5 
+paramGrid = ParamGridBuilder().addGrid(svm.regParam, [0.1, 0.01]).build()
+crossval = CrossValidator(estimator=svm,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=BinaryClassificationEvaluator(),
+                          numFolds=5)
+
+#-- Fit Model
+model1 = crossval.fit(subset1)
+model2 = crossval.fit(subset2)
+
+#-- Metrics
+predictions1 = model1.transform(subset1)
+predictions2 = model2.transform(subset2)
+evaluator = BinaryClassificationEvaluator()
+auc1 = evaluator.evaluate(predictions1, {evaluator.metricName: "areaUnderROC"})
+auc2 = evaluator.evaluate(predictions2, {evaluator.metricName: "areaUnderROC"})
+
+fpr, tpr, thresholds = metrics.roc_curve(labels, scores)
+plt.plot(fpr, tpr)
+plt.show()
