@@ -1,0 +1,46 @@
+from pyspark.ml.classification import LinearSVC
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+from pyspark.ml.feature import VectorAssembler
+from pyspark.mllib.evaluation import BinaryClassificationMetrics
+import matplotlib.pyplot as plt
+
+# Assuming 'df' is your Spark DataFrame and 'features' are your feature column names
+
+# Filter subsets
+subset1 = df.filter(col('ID') == 1)
+subset2 = df.filter(col('ID') == 2)
+
+# Feature Engineering (example)
+assembler = VectorAssembler(inputCols=features, outputCol="features")
+subset1 = assembler.transform(subset1)
+subset2 = assembler.transform(subset2)
+
+# SVM Classifier
+svm = LinearSVC(labelCol="label", featuresCol="features")
+
+# Cross-Validation
+paramGrid = ParamGridBuilder().addGrid(svm.regParam, [0.1, 0.01]).build()
+crossval = CrossValidator(estimator=svm,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=BinaryClassificationEvaluator(),
+                          numFolds=5)
+
+# Fit Model
+model1 = crossval.fit(subset1)
+model2 = crossval.fit(subset2)
+
+# Evaluate Model
+predictions1 = model1.transform(subset1)
+predictions2 = model2.transform(subset2)
+evaluator = BinaryClassificationEvaluator()
+auc1 = evaluator.evaluate(predictions1, {evaluator.metricName: "areaUnderROC"})
+auc2 = evaluator.evaluate(predictions2, {evaluator.metricName: "areaUnderROC"})
+
+# Plot ROC and Scatter Plot
+# Note: You need to collect the scores and labels to your local machine
+# Be careful with large datasets
+# Example plotting code (adjust as needed):
+# fpr, tpr, thresholds = metrics.roc_curve(labels, scores)
+# plt.plot(fpr, tpr)
+# plt.show()
