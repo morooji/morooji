@@ -2,3 +2,1718 @@ from pyspark.ml.classification import CatBoostClassifier
 classifier = CatBoostClassifier(iterations=100, learningRate=0.01)
 model = classifier.fit(trainPool)
 predictions = model.transform(testPool)
+
+Input=[
+happy faces
+workplace sentiments
+mixed opinions
+topic label: no feedback provided
+no comments
+empty documents with no keywords
+dress code relaxation
+thank you
+improvement needs
+no comment
+store theft concerns
+pay issues
+comma separated values (csv)
+unclear topic
+employee appreciation
+scheduling and staffing issues
+security and workload concerns
+unrelated text
+hiring and supervision
+wage inequity
+no documents
+employee sentiment analysis
+unknown words
+no relevant information provided.
+empty documents
+unknown topic
+the label for this topic would be "legal statements".
+no information given.
+floor repair and deli improvements
+no feedback
+workplace equality and animal jobs desired.
+topic not identified
+nonexistent topic
+topic label: "empty documents
+no additional info.
+not applicable/not covered
+improve morale with bbq
+missing data
+negative topic
+empty documents with no keywords.
+empty documents with empty keywords.
+empty documents with commas
+employee safety concerns during pandemic and with customers.
+no information available
+no relevant information provided
+positive manager
+no documents provided.
+unknown content
+it's difficult to determine a specific label for the given information as it seems
+none documents
+no comment documents
+empty documents with no content
+no meaningful label
+empty documents with no description
+communication and selection
+no thanks" seems to be a suitable label for this topic.
+job satisfaction
+no thank you topic.
+blank topic
+short label: "topic n
+empty documents with no content.
+no
+irrelevant documents
+good schedule and salary.
+family satisfaction
+cold store complaints
+topic: unknown topic
+no context or meaning provided.
+empty document list with no description
+unrelated documents
+empty topic with blank documents and empty keywords
+no context provided.
+no description available.
+unpredictable retail schedules
+department communication issues
+workplace wellbeing and support
+company benefits & experience
+positive management support
+none given
+sharing nothing
+the appropriate short label for this topic would be "additional info.
+training and scheduling.
+no due time
+store communication problems
+unhappy employees and poor leadership
+nonsense words
+importance of distance
+pay raise issue.
+safeway workplace issues
+workplace satisfaction and income inequality.
+customer service improvement.
+security staffing issues
+uncertainty
+improve work efficiency
+workplace issues.
+positive management and team efforts
+job satisfaction safeway
+na
+improving communication
+team performance issues
+employee dissatisfaction and pay issues
+pay and holidays.
+unfair management practices
+pay and hours desires
+task scheduling and employee time management.
+n?a
+team training and growth needs
+feeling discriminated and undervalued in the workplace
+management support issues
+underpaid workers complaints
+employee transfer issues and store concerns
+management communication issues
+management issues
+store security issues
+job management evaluation
+starbucks management issues
+pharmacy technician morale
+worker's issues and wage increase.
+management support
+front end team
+store management efficiency and employee retention
+workplace issues and communication
+employee satisfaction and work hours
+work progress
+store management improvement
+supervisor feedback and leadership
+workplace feedback and improvement
+top store managers
+empty topic
+store manager issues and improvements
+employee recognition and support
+workplace discomfort
+unrelated keywords
+livable wages needed
+safeway positive experience
+workplace satisfaction
+no answer
+no opinion
+store security measures and employee safety
+communication issues
+respect in workplace
+fair pay and promotions for experienced staff
+uncertain benefits
+safeway leadership issues
+training and feedback needed
+covid-19 employee compensation and treatment.
+safeway quality decline post-merger
+feedback preferences
+pay equity issues
+treating people fairly
+good documents
+positive management experience
+good manager, great team, listens and understands
+low pay issues
+lack of security guards at store.
+therapy, application availability, personal conversation
+music repeat request
+customer service issues
+low pay and poor management
+supportive management
+safeway pay and management.
+work environment and management appreciation
+positive work experience
+positive work environment
+favoritism in workplace
+job dissatisfaction and disrespect.
+appreciation and teamwork
+employee safety concerns
+misleading pay rates and hiring practices
+safeway wishes
+employee value and recognition
+management improvement suggestions
+improving store performance
+store improvement proposals
+enjoyed workplace support
+improve employee retention and recognition
+starbucks employee issues
+uncertainty and merger
+training improvement in stores
+hybrid work schedule
+excellent manager support
+k match and employee benefits improvement.
+nothing matters
+difficult to understand
+management issues and job growth concerns
+communication issues and low pay scale
+no additional feedback
+stores associate concerns
+appreciation and support in workplace
+employee accountability and retention.
+medical insurance costs increase
+improved hourly pay for employees
+improving retail division communication
+operations management issues
+insurance & incentives for pharmacists
+safeway employee experience
+benefits satisfaction and improvement ideas
+work-life balance issues
+inflation and salary increase
+no comment topic
+retail store management improvement
+employee benefits and compensation issues
+career stagnation & leadership issues
+employee evaluations and management performance
+workload imbalance and compensation disparity
+bonus eligibility inequality
+diversity and inclusion concerns
+career growth concerns at albertsons
+lack of communication in workplace
+favoritism in promotions
+work environment and leadership issues
+positive work environment and management.
+computer programming issues
+competitive salaries and staff retention
+work-from-home options and benefits
+health insurance costs and benefits
+the short label for this topic would be "unspecified topic" as
+division support issues
+health insurance and wellness programs.
+professional development
+positive company culture
+maternity leave benefits
+performance accountability concerns
+feedback and training for managers
+low morale and manager issues
+positive work experience and leadership appreciation
+positive aci workplace culture
+company culture shift
+survey experience & concerns
+system issues and problems
+workload and project management
+merger uncertainty and job security concerns
+employee holiday pay and scheduling concerns
+raises and promotions issues
+merger concerns and compensation issues
+workplace satisfaction and vacation policy
+career advancement opportunities
+improving corporate programs and structure
+nothing far
+technical issues and inequity
+work-life balance struggles
+alignment and prioritization challenges
+salaries and benefits disparity
+blank topic with no text and keywords
+disconnected retail marketing teams.
+training and store management challenges
+overwhelmed retail operations
+workplace improvement
+raises and compensation disparity
+employee dissatisfaction and feeling undervalued
+improve healthcare benefits
+employee morale and compensation
+improved communication
+workplace values and diversity".
+store staff and hours
+nothing added
+positive workplace growth
+leadership challenges
+professional development and training needs
+process improvement needed
+office changes and associates' experiences
+opportunity thinking
+focus on streamlining initiatives and training.
+employee concerns
+albertsons compensation and service
+aci employee concerns
+employee development programs
+safeway/albertsons experience
+no additional comments
+great managers
+pay_adjustment
+lack of training and recognition.
+training and development programs
+pay increase inflation
+job insecurity and stress in company merger
+manager issues
+working from home
+company improvement
+work-life balance concerns
+improved team management and supervision
+employee expectations and recognition.
+lack of promotion opportunities
+positive work culture and career advancement
+low pay & overworked
+workload imbalance
+four-day work week suggestions
+company pay issues
+onboarding issues and collaboration challenges
+discontent with management
+understaffing and workload
+incomplete topic
+store security and inventory issues
+no feedback available.
+the label for this topic could be "customer app and discount confusion".
+thank you messages
+no data
+employee benefits
+topic with no comments
+fair treatment
+indecisive responses
+topic a
+low wage
+workplace organization & management
+close store christmas
+empty
+multiple keywords
+task assistance and efficiency
+empty documents with no relevant keywords.
+no topic description available
+uninformative topic
+the given topic appears to be empty as it contains no actual content. therefore,
+topic 1: unknown or missing information
+humor and emoticons
+job dissatisfaction
+unfortunately, it's impossible to provide a short label based on the given
+no way
+positive greetings
+no context given.
+unspecified topic
+in this case, it would be difficult to provide a meaningful label based on the
+no content
+pay more demands
+none_at_moment_documents
+one possible short label for this topic could be "nottingham non-
+empty_documents
+wages and inflation
+bakery issues
+safeway employee issues
+great store environment
+store upgrades and standards
+minimum wage inequality
+no meaningful label.
+equipment repair needed
+department issues and management problems
+store morale issues
+unfair treatment and underappreciation.
+topic about nothing
+negative feedback
+no answer provided.
+competitive pay
+pharmacy staffing and quality issues
+store security and theft issues
+employee wages and recognition
+employee pay and appreciation.
+not much to say
+the short label for this topic would be "better management.
+staffing and training issues
+training and supervision
+fuel station discontentment
+workplace challenges
+work inequality and recognition
+store staffing issues
+employee dissatisfaction with supervisors and managers
+more hours needed
+customer satisfaction challenges
+pay and work conditions
+company theft problem
+deli manager praise
+wage and labor concerns.
+new employee benefits
+raise wages needed" would be a suitable label for this topic.
+workplace recognition and stress
+workplace safety concerns
+labor strains and corporate demands
+employee discontent and appreciation
+grocery management recognition
+toxic workplace issues
+current time exclusion
+lack of communication
+benefits frustration
+hours cut
+safeway leadership and growth
+i suggest "miscellaneous documents" as a short label for this
+employment opportunities and work ethic
+"retail discontent
+team morale and communication issues
+job appreciation
+employee distrust and morale issues
+grocery store customer service.
+workplace issues
+crew support and opportunity
+employee concerns and recognition
+unhealthy work environment
+training and communication needed
+unfortunately, without more context or specific details about the documents and their content,
+employee retention and training
+communication and positive workplace
+new employee communication issues
+company improvements and employee needs
+starbucks experience and staffing issues
+great company management and employees
+improve employee experience
+money/pay
+topic not specified
+employee appreciation and fairness
+understaffed workforce
+unfair corporate practices
+dress code and workplace issues
+treatment and decision-making in the workplace
+employee experiences and opinions.
+rewarding employee efforts
+better pay for employees
+negative responses
+none.
+effective management team
+request for pay raise
+management satisfaction
+no feedback given
+negative statements
+topic x
+need more help
+empty documents with keywords
+no information
+a short label for this topic could be "negations" or "affirm
+no data provided.
+long-time employee satisfaction with company and management.
+workplace concerns
+empty subject
+no documents, no keywords
+improving store management
+none topic
+employee accountability and retraining.
+improve company culture and organization
+empty topic with no keywords.
+company recognition for good workers.
+positive vons experience
+negative emojis
+employee wellbeing and pay issues
+not helpful topics
+schedule preferences
+work environment improvement
+job performance
+no meaningful label available
+topic lacking content
+none specified.
+yes, the short label for this topic could be "appreciation messages
+nothing good job" could be a suitable short label for this topic based on
+the short label for this topic would be "name uncertainty".
+uncertain topic
+empty_topic
+"blank topic
+topic label: n/a (no meaningful information provided)
+employee discount programs
+positive opinion
+none given.
+empty documents with comma separated keywords.
+no comments topic.
+no documents found.
+no documents.
+i'm sorry but it seems like there is not enough information provided to accurately
+no comments topic
+computer system dissatisfaction
+no relevant content provided.
+nothing to share
+improvement needed
+topic: miscellaneous
+employee wishes and problems
+no topic found
+no topic.
+work experiences
+topic: no comments
+improved company management
+the label for this topic would be "unrelated documents".
+feelings about company
+employee opinion vons albertsons.
+emoticons
+accountability in workplace.
+topic with no documents and empty keywords.
+one possible short label for this topic could be "general n-related documents".
+movie quote challenge
+no.
+stores improvement
+the given topic and documents do not provide any meaningful information or context to assign a
+animal habitats
+excelente service
+indecisive opinion.
+miscellaneous.
+shift benefits, team improvement, store staffing
+topic short label: "none for now
+store management issues
+job satisfaction and suggestions
+store management and employee issues
+better pay and inflation
+empty document topic
+management accountability
+pharmacy technicians' demands
+the topic appears to be about someone expressing disagreement or uncertainty in response to
+employee survey criticisms
+department pay raise.
+neutral opinions
+indecisive topic
+employee satisfaction issues
+equal opportunity and pay balance.
+"no topic
+scheduling issues
+pay increase requests
+no feedback provided
+training new employees
+great store managers
+complicated keyboard symbols
+improving store policies and feedback.
+employee satisfaction and appreciation
+wage increase desire
+love and appreciation for management team
+communication disconnect.
+no response
+employee discount issues
+positive opinions
+mutual respect and communication.
+great management team
+continuous improvement
+understaffed departments
+it's difficult to assign a meaningful label based on the given information as both
+deli department improvement
+pay rate inequality for long-time employees
+improved customer service
+supervisor problems
+website issues and difficulties
+employee benefits and safety concerns
+paid vacation benefits
+understaffed jobs
+job satisfaction and management team
+job opinions and experiences
+customer service and efficiency in stores
+team satisfaction and support
+pay and living costs
+worker wages and hours
+higher pay for jobs
+no merger topic
+unclear topic" or "incomplete information
+pay more wages
+managers performance
+the short label for this topic could be "document topics".
+shift scheduling issues
+employee opportunities and feedback
+customer service & training issues
+thanks and excitement
+company changes over time
+professional teamwork respect
+improve customer service
+insufficient family support
+mixed opinions about vons.
+essential worker pay increase
+employee sentiment
+increase workforce and pay rate
+management performance
+relationship supervisor-employee
+improving department communication & training
+fair pay for hard work
+environmental practices and customer awareness
+friendly management
+work burnout and understaffing
+improving company conditions
+training and communication issues
+staff turnover in stores
+pay inequality in retail stores
+satisfaction with job experience
+satisfied workplace
+nothing and positivity
+no items currently.
+better communication
+employee issues and management
+improve supervisory communication and management skills
+good company culture and improvements.
+training and team improvement needed
+union-related training issues
+warehouse improvement
+production management issues
+improving team structure and roles
+plant employee concerns
+no docs available
+no things
+unequal treatment in workplace
+hr improvement and support.
+unsafe standards
+equipment maintenance and hiring issues
+training and integration
+employee morale and management relations
+unfair treatment and low pay
+job satisfaction and work environment at safeway
+manager appreciation
+warehouse discontentment
+favoritism in management
+union benefits inequality
+opinions on company quality
+warehouse organization
+management relations
+facility improvement suggestions
+better management communication
+pay increase california
+great company
+unrelated gibberish
+cost reduction initiatives
+non-repetitive documents
+work environment satisfaction
+no thoughts
+warehouse safety concerns and performance expectations
+shift scheduling difficulties
+improving team communication
+improving work environment and employee benefits
+opinion differences
+insufficient pay
+driver communication and training
+workplace satisfaction and pay equity.
+workplace discrimination & inequality.
+positive job experience
+company jobs and system
+company morale and management issues
+workplace time constraints
+quality control in grocery stores
+improve supervisor pay
+employee feedback and management
+job difficulties and system issues
+current state
+paid time off issues
+salary and benefits
+hire sanitation workers
+pay increase
+survey anonymity issues
+not anonymous documents
+nothing related
+stressful work environment
+unfair treatment & favoritism
+the topic is about a demanding job with strict performance standards and good pay.
+safe work environment ¬≠
+job satisfaction issues
+management issues and stress
+working conditions
+workplace feedback and respect
+union benefits disparity
+work-life balance and pay increase
+employee appreciation and improved communication
+human resources issues
+warehouse issues and worker suggestions
+albertsons merger concerns
+unsatisfied employees
+supervisor development and employee engagement.
+improving communication.
+improve workplace conditions
+improve, leadership, equipment.
+company neglects employee wellbeing
+union issues at dc workplace
+training needs and improvements
+training improvement needed
+work-life balance
+great company opportunities
+supervisor support and recognition
+forced overtime complaints
+emptydocumentstopic
+uncertain statements.
+improving company environment
+mixed reviews
+listening to employees
+no feedback topic
+hostile work environment
+pay disparity
+anonymous process concerns
+job satisfaction decline
+job stress and enjoyment
+help needed
+job satisfaction and communication issues.
+no significant topic found.
+teamwork and morale.
+pay increase for workers
+staff and schedule needs
+workplace issues and privacy concerns
+none present
+emoji sentiment
+safeway employee feedback
+employee benefits and pay
+salary adjustment employee recognition
+survey feedback
+no data provided
+no information provided.
+empty_documents.
+company improvements
+customer feedback and suggestions for improvement in retail store operations
+system improvement needed
+general
+positive emotions and friends
+incomprehensible topic
+inadequate communication and support
+empty documents and keywords topic
+employee management and customer satisfaction.
+security concerns.
+topic not identifiable
+positivenegative
+starbucks no ipads
+sick leave and mental health days
+noun compounds
+empty documents and keywords
+no content available
+nonexistent topic with null documents
+the topic of this document set cannot be accurately described with only 5 words due
+no input documents provided. please provide the input documents.
+negative documents
+empty documents with empty topic.
+n/a.
+negative opinion
+topic: "documents with abbreviations
+none thank you variation
+misunderstood words
+topic with no specific theme or context
+negative topic" or "negative keywords" or "no
+empty document topic.
+blank topic or unknown topic
+understaffing issues
+stopping shoplifting
+topic with no documents and empty keywords
+no label.
+uncertain documents
+the topic seems to revolve around the concept of "nothing" or lack
+noisy environment
+barking dogs and symbols
+not possible. there is no clear topic based on the given information.
+empty topic with keywords
+mixed inputs
+no information" or "empty documents" or "blank topic
+negation topic
+one possible short label for this topic could be "miscellaneous texts
+store company work conditions
+money for work
+minimum wage issues
+store-level communication issues
+stagnant pay
+positive safeway experiences
+low pay and unequal treatment in long-term employment.
+workplace morale
+positive manager feedback
+extra store hours needed
+nothing
+store team management
+pharmacy experience
+company performance evaluation and pay scale
+no current issue
+time usage
+training and support
+cats and dogs
+employment dissatisfaction
+night shift improvements
+job dissatisfaction and career advancement
+low pay and hard work
+improving company service
+toxic management
+departmental issues
+improve company offerings
+unfair store environment
+part-time worker pay raise.
+positive experience
+satisfied employee
+positive sentiment
+unfair pay and recognition
+positivity in workplace
+coworker harmony
+store improvements and needs
+need more hours
+satisfaction and leadership issues
+equal bonuses for department heads
+workforce retention
+employee flexibility and training
+room for improvement
+employee needs
+employee recognition and dress code
+improve workplace efficiency
+new acme workers' difficulties
+stop cutting hours.
+employee dissatisfaction.
+deli needs upgrades & help
+improve department staffing and management
+retail worker's opinion
+insufficient store-level supervision
+positive work experience.
+na documentation
+deteriorating company morale
+price increase requested
+part-time hours issue
+employee pay and support
+name topic
+acme employment experience
+wage inequality and store management issues
+computer system issues
+food and wellbeing
+topic: n/a (not applicable)
+unfair pay
+it's difficult to determine a short label for this topic as it does not
+no documents at time
+hiring more people
+raise pay rate need
+training needs improvement
+safeway work experience and training
+topic label': 'undisclosed keywords
+more work hours needed
+store security and staffing issues
+pay improvement proposals
+negative employee feedback
+positive manager impact
+customer service issues.
+schedule conflicts and workplace issues
+positive management team
+unity and fairness among employees.
+topic of documents with no content
+working experience
+no data found
+topic of nothingness
+managers and workers'
+temperature and humidity sensors
+merger concerns and customer experience
+employee turnover.
+multiple none
+manager pay increase
+improvements to restrooms and tasks
+positive management-employee relations
+money needed
+no content provided
+employee discounts & pay
+employee bathroom needs
+pay wishes
+hiring issues and staffing concerns
+positive management
+knowledge uncertainty
+thinking nothing
+dog job performance
+cashier support improvement
+employee pay and job duties
+none related
+pay, money, work, customer, want
+high turnover rate in department
+employee treatment and contract discontent
+store staff needs.
+improve work environment and efficiency
+current status: nothing yet
+empty documents.
+emojis and positivity.
+silence and management
+maintenance issues and staffing concerns
+no meaningful topic.
+no relevant data provided.
+benefits delay and employee experience
+workplace favoritism
+employee empowerment & training
+new gloves issue
+company performance.
+empty documents topic.
+undefined topic with no keywords provided
+store improvement needed
+recognition issues in store employees
+pay and insurance improvement
+starbucks managers evaluation
+mixed safeway experiences
+inefficient hiring process
+roof repair needed
+department pay inequality
+store staff issues
+uncertain job position
+blank topic with no description
+done
+employee discount and hours
+company changes and health issues
+employee discontent and pay disparity
+timely repairs and staffing
+recognition and compensation issues
+workplace environment
+job satisfaction and pay raises
+minimum wage increase
+vacation pay and benefits
+employee concerns and suggestions
+teamwork and management at safeway
+job satisfaction and growth
+improve app usability for customers and employees.
+dysfunctional company issues
+employee discontent and inequities
+communication and training issues
+positive responses
+unhappy workers
+store pay increase for employees
+scheduling management problems
+miscellaneous data
+opportunities and time
+satisfaction and nothingness
+no topic label is applicable for this set of documents as there are no relevant keywords
+wishes for improvement
+no additional info
+employee support and pay
+wage disparity and hiring issues.
+workplace opinion
+self-improvement guidance
+great team management
+employee dissatisfaction
+pay increase for quality employees
+job satisfaction and retirement plans
+sad experience
+employee authentication & union participation
+pay competitiveness
+working conditions and management
+best managers ever
+employee salary and insurance
+employee development opportunities
+compared low salary companies
+minimum wage and job pay discontent
+workplace wage and insurance issues
+insurance benefits feedback
+underpaid and overworked
+hourly pay increase
+at this time nothing additional.
+workplace equity and support
+increase salaries and lower prices
+roof issues and pay discontent
+job experience.
+pay improvement for employees
+communication improvement
+unhappy worker
+minimum wage top pay
+no comments requested.
+yes
+fair working hours for employees
+workplace inequity
+store organization problems
+diversity and inclusion in corporate environment
+compensation in pharmacy jobs.
+salary disparity and morale issues in pharmacy technician
+no clear topic identified.
+new employee feedback
+the given topic does not contain any meaningful content or keywords. therefore, it is
+ambiguous topic
+staff shortage
+empty topic with commas
+topic unclear
+shelving and equipment maintenance
+topic label: unspecified topic
+inconclusive topic
+app usability and customer service
+hire more staff
+no response provided.
+emoticons and punctuation marks
+the given topic and documents seem to be empty or devoid of any specific content
+topic: unknown or not applicable
+nothingness
+improving treatment in workplace
+working hours and minimum wage
+topic label: "undefined
+no data available
+no documents available
+topic 1": a short label for this topic could be "empty doc
+none of none
+no clear topic
+negative feelings about place
+cleanliness improvements
+money needs.
+job dissatisfaction with direct supervisor.
+management improvement
+blank topic with empty documents and keywords
+communication improvement and staffing issues
+this topic appears to be about: "blank topic
+gibberish texts
+great colleagues
+union dissatisfaction
+negative mixed topic
+topic with no documents and no keywords
+no content topic
+workplace expectations
+not enough information.
+workplace happiness
+n/a documents
+"n/a
+no relevant documents found.
+it seems there is no meaningful content in the documents and the keywords don't
+sports equipment
+empty documents with commas.
+no information given
+company feedback
+topic: "none
+topic with many commas
+empty documents with blank keywords
+new hires compensation
+job injustice for long-term employees
+employee care and benefits
+unfair store management
+improve communication
+low pay raises &amp; unfair treatment
+the nothing topic
+workplace policies
+system issues and surveys
+pay and staffing issues
+underpaid employees
+pay disparities in the workplace
+experienced employee pay inequality
+no feedback received
+low pay job
+high turnover concerns
+deli department pay
+improved training and seniority benefits
+employee feedback and wages.
+deli department issues
+hire more workers
+pay increase for employees
+raises for retail associates.
+wage increase needed due to inflation
+unsatisfactory work pay
+no effect
+higher payments for all
+well-treated same.
+pay increase for long-term workers
+management and co-workers
+competitive wages
+raise expectations
+pay inequity
+fair pay and work conditions
+store improvements and customer interactions
+improved payments
+minimum wage disparity
+poor upper management
+nothing to say
+hiring challenges and workforce issues.
+pay raise to $15 an hour
+manager support
+store suggestions and issues
+training for better performance
+employee concerns and management issues
+employee benefits desires
+team collaboration
+job experience
+negative opinions
+increase compensation for employee retention.
+opportunity for advancement and training in supervisory positions
+issues with management and morale.
+thankfulness expression
+positive workplace experience
+employee dissatisfaction with company policies
+more money needed
+compliance and communication issues.
+underpaid and low hours.
+store issues and management
+low pay and stressful customers
+topic not applicable
+store management issues and compensation
+feeling unappreciated and discouraged from co-workers
+uncertain timeframe
+negation of additional
+nada and corpat
+family and nothing
+unfair store director
+employee raise requirements
+not applicable matter
+competitive wages and better working conditions.
+worker communication and tasks
+concerns with company pay and opportunities
+tom thumb opinions
+money matters
+the topic is related to "hiring more staff".
+low wages and long hours
+friendly management and service.
+negative workplace morale
+underpaid staff appreciation
+albertsons pay increase for long-term employees
+supervisor training and management evaluation
+pharmacy workplace struggles
+lunch breaks for pharmacy staff
+unfair manager treatment
+pay improvement
+pharmacy technician pay inequality
+tom thumb employee experience
+teamwork and communication
+management appreciation
+employee recognition and balance.
+food waste and environment".
+competitive salaries need improvement
+document retrieval
+needs more help
+upper management performance
+albertsons experience and opportunities
+employee pay increase
+positive manager experience
+enjoyable workplace issues
+unfair pay complaints
+employee feelings and department communication
+employee feedback and experience.
+hour cuts and staffing issues
+store maintenance and employee training.
+part-time employee benefits
+job satisfaction and pay
+cost of living increase
+living wage increase needed in austin area
+customer feedback
+flexible schedule and positive workplace at albertsons
+technology upgrade needed
+better store communication & hiring
+manager accountability
+various symbols and keywords
+friendly work environment
+pay and experience
+job experience at randalls steiner ranch
+job issues and management concerns
+positive management feedback
+low wages and economy
+unwilling to discuss
+low pay for experienced employees
+worker disconnection and communication.
+wage inequality and cost of living
+poor store management
+employee dissatisfaction with low pay and poor treatment
+supervisor issues and communication problems.
+training needs and improvement
+lack of support and recognition
+job pay complaints
+corporate issues
+great store management team
+grocery store pay discontent
+negative workplace culture
+negative views on surveys
+cost of living raises
+improving employee satisfaction and efficiency
+flexible schedules
+inflation and raises
+job satisfaction and manager relations
+hiring staff, fair pay, retention
+labor and wage inequality.
+communication issues in management
+underpaid employees' feelings
+pharmacy challenges and improvements
+labor concerns and pay issues
+low wages and labor issues for clerks
+albertsons experiences
+work conditions & pay
+pay and benefits
+unfair bonuses and poor management
+job stress and work overload
+communication and change management
+unfair pay and training issues
+part-time workers' demands and concerns
+sure! based on the given documents and keywords, a suitable short label for the
+disorganized management
+management ethics and accountability.
+tom thumb experience and feedback
+company support and teamwork.
+positive reviews
+no info at time
+randall's salary adjustment
+discontent employees and top pay issues
+grocery deli pay discussion
+corporate disconnect and lack of employee support.
+store wage issues
+mandatory surveys and employee harassment
+management inequality
+positive safeway experience
+schedule changes and vacation issues
+hour cuts and employee quality
+pay improvement.
+job insecurity and company merger concerns
+supervisor issues
+safeway albertsons benefits & treatment
+no content found.
+app and coupon issues
+hector makes it bareable
+low pay and recruitment quality
+mixed feedback on workplace experience
+survey participation preference
+employee concerns and treatment equality
+workplace inequity and attitude
+negative work environment
+work environment and supportive manager
+store issues
+equipment and quality issues
+employee feedback limitations
+opt out
+repeated comments
+workplace opinions
+schedule changes
+job satisfaction and pay increase
+opt out documents
+sustainable donation and recycling
+training quality
+opt out options
+nighttime store security
+safeway experience
+employee opting out
+customer service challenges in checking department
+limited thoughts
+communication and staff issues
+supportive workplace growth
+wages and positions in department management.
+opting out and leave of absence.
+opting out repeated
+job fairness and compensation
+job experience and improvements
+salary disparity
+wage disparity in bakery industry
+feedback evaluation
+unequal treatment and negativity
+unappreciated employees
+treatment preferences
+pay increase needs
+pharmacy workers' rights and benefits
+cost-cutting concerns and security issues
+benefits improvement suggestions
+disagreement over union dues
+hiring and promotions
+pay increase demand
+safeway employment issues
+department changes and stressors
+need more hours.
+supportive company experience
+pharmacy staffing and improvement needs
+employee frustration
+stress and customer treatment in stores
+employee wishes and concerns
+customer satisfaction and benefits
+feel unfair treatment in workplace
+difficult password changes
+equal treatment for all.
+wage disparity in stores
+unhappy work environment
+pay equality and training in deli
+mixed feelings about job
+workplace training and support issues
+pay raise needed
+courtesy clerk pay
+workers' rights and management expectations
+unfair wage distribution for employees.
+i opt out documents
+sick pay benefits
+wages and benefits declining over time.
+better pay for long time workers
+more money
+customer satisfaction and labor issues
+topic label: unknown or unrelated content
+hourly benefits and management confusion
+store employee experiences
+corporate change impacting customer experience
+negative communication.
+survey and incentive imbalance
+upper management improvement
+positive company experience
+low wage labor issues
+employee experience and wage issues
+poor training and support in company
+topic label: "unrelated keywords
+job pay and staffing inequity
+pharmacy workers' concerns
+employee salaries and management
+store concerns
+team support & workload balance
+maintenance issues and requests
+non-union benefits vs union benefits
+job management issues
+employee treatment and company performance
+inadequate employee incentives
+short tenure opinions
+workplace inequality and recognition
+employee satisfaction & pay
+opt out topic
+app issues and customer satisfaction
+store improvement
+job satisfaction and benefits.
+opt out preference
+opt out survey
+improving customer service in retail.
+water accessibility at work
+communication breakdowns in fuel stations
+job pay discontentment
+working hours reduction
+increasing wages for living costs
+workplace respect and culture issues
+no comments available
+deli issues and improvement requests
+store workers' challenges and recognition
+improved care and training in the workplace
+opt out new employee
+workplace disrespect and unfairness
+negative response
+manager pay and recognition
+overall opinions
+workforce and break time issues
+low pay
+work environment issues
+work experience
+team building needed
+inconsistent scheduling issues
+break need
+underappreciated employees
+produce manager's pay and workload
+inequality in employment and compensation
+merger anxiety
+safeway/albertsons employee issues
+safeway wage decline and exploitation
+employee concerns and management policies
+manager communication improvement
+mixed work days
+equipment breakdowns
+pay increase suggestions
+labor and hiring practices
+store director challenges and improvements
+scheduling issues & hiring policy
+opt out survey responses.
+workplace dissatisfaction
+improving hiring and training
+retail pharmacy worker complaints
+pay inequality for long-time employees
+employee well-being & management performance
+supervisor appreciation
+automated ordering system issues
+workplace management concerns
+money and hours needs
+unsafe store environment
+social media marketing
+benefits and hours disagreement
+employee concerns and treatment
+positive store environment
+workplace growth and environment
+the great escape vacation
+great manager experiences
+employee motivation
+good work environment
+equal pay demands
+no contextual data provided.
+completions
+improving training
+store issues and management changes
+unhappy employee
+store autonomy and labor issues
+positive impact and collaboration
+stores security problems and needs
+improve corporate communication
+pay and job satisfaction
+notenoughworkers
+security concerns in stores
+pay inequality in long-term employees
+store security and management feedback
+none for now
+cart security and supply issues
+i think the topic could be labeled as "thoughts and opinions
+improve technology and guidelines
+training support improvement
+benefit clarifications and accessibility issues
+bakery equipment upgrade
+hours and pay
+store level leadership issues
+scheduling and communication issues in departments
+the short label for this topic could be "workplace improvements".
+wishing for recognition and understanding.
+"not restricted
+cannot determine topic with provided data.
+good manager support".
+management inequality and accountability issues
+positive
+work schedule disparity
+uncertainty and lack of knowledge
+store director issues
+employee surveys and company culture
+training and management improvement
+unfair treatment and communication issues in workplace
+pharmacy management issues
+vacation time, covid enforcement, burnout
+environmental improvements
+new hire training process
+working with disabilities in the workplace.
+community initiatives
+hiring needed for labor force
+company retirement
+reluctance to participate
+customer backlash against merger.
+checkout issues and customer frustration
+rewarding teams and bonuses.
+supervisor issues and upper management response
+indifference and change
+unfulfilled promises for raises
+employee issues and company values
+fair pay and improvement in deli department
+confusing instructions and overwhelm
+accountability and expectations in workplace.
+job pay satisfaction
+restroom issues & workplace quality
+improving grocery services and employee benefits
+improving workplace relations
+multi-keyword topic
+mismanagement and hostility at safeway
+maximum character limit complaints
+courtesy clerk treatment and job stress
+unprofessional management issues
+employee raises and bonuses dissatisfaction
+team management and work environment
+appreciated supervisors and personal support
+equipment fixing desires
+pharmacy staffing & pay issues
+help wanted
+management improvement needed
+mixed feedback and concerns
+opinions on company mergers and internships
+management leadership gap
+improving employee retention and hiring practices
+corporate employee valuation
+workplace support and management issues
+pharmacy issues
+supervisor feedback
+store communication and support
+pay and working conditions
+technology improvement and recognition
+company safety concerns
+unhappy employees
+great managers and colleagues
+training needs and job satisfaction
+employee welfare and store maintenance improvement
+employee pay raise requests
+communication gap between corporate and stores
+pay increase for pharmacy staff
+grocery store experience
+price increase & toxic work environment
+management improvements needed
+workplace conflict and communication issues
+work experience feedback
+employee concerns and experiences
+great manager, appreciation
+staff shortage strain
+discontent with pay and raises
+workplace experience
+employee concerns and communication
+no input documents provided.
+unresolved concerns
+night shift issues
+safeway issues and stress
+room for improvement in positions.
+unpredictable work schedule
+store wishes and issues
+stop enforcing employee surveys
+collaboration and management.
+affectionate thanks
+great safeway experience
+pay inequity among new hires and long-time employees
+unfair manager hours
+manager training enhancement
+understaffed store director
+leadership & micro-management issues
+improving manager availability and accessibility
+haggen corporate issues
+discontent with supervisor and favoritism.
+haggen employee issues
+money concerns and lack of support
+positive feedback desired
+understaffed store scheduling struggles
+employee concerns and expectations
+security and checkout issues in retail stores
+yes, based on the given documents and keywords, an appropriate short label for this
+improve departmental communication
+fair compensation and raises
+minimum wage discontentment
+great haggen experience
+employee pay raises
+covid impact and pay
+deli training and cleanliness
+unknown time
+workplace communication issues
+assistant manager frustration and bakery environment.
+frustrations and improvements in workflow
+positive store experience
+unprofessional communication & expectations
+employee pay & raise issues
+workplace inequality and support
+positive or negative' seems to be an appropriate label for the given
+management issues and workplace relations
+unfair treatment and poor management
+job satisfaction (currently nothing to add)
+albertsons-kroger merger and employee treatment
+enjoy working @ shaw's
+job satisfaction and wages
+employee satisfaction and compensation
+repetitive statements
+reducing waste and sustainability.
+work satisfaction and recognition
+desired working hours
+pay inequality
+schedule flexibility
+minimum wage increase impact
+staffing and wage issues in the company
+pay raise sentiments
+competitive pay for employees
+front end comfort and customer service
+help needed in department
+improve customer service communication
+system upgrade and security improvement
+thank you topic
+improving customer experience
+improve retail operations
+pay and respect issues
+team morale and department management
+feeling undervalued and underpaid
+worker training issues
+topic label: "movie reviews
+store management and employee experience
+time information
+work environment and management
+workplace stress and appreciation.
+store department changes
+anonymous identities
+improve store communication
+misaligned labels
+nonsense topic
+overworked workers and corporate neglect
+part-time employee pay and benefits
+improving store communication and decision-making
+i'm not experiencing anything.
+improving customer service
+job disparity and benefits
+improve company workforce
+lack of help in hr tasks
+supportive company family.
+improve pay system
+underpaid and unappreciated
+store management and pay
+low paid worker
+break room perks
+no topic label.
+payment requests
+appreciation in retail jobs
+supervisor communication issues
+unprofessional store environment
+inequality and unfairness in work environment
+pay increase for deserving employees
+environmental concerns and store practices.
+hire more staff to improve mission
+wage competitiveness
+accountability issues
+unprofessional management and harassment.
+corporate-store tensions
+retail workers' pay demands
+workplace improvement and incentives
+fair pay for workers
+insurance issues and benefits
+job experience and treatment.
+hiring more front-end baggers
+great managers and job!
+department consistency
+communication issues at work
+director misconduct
+team improvement needed
+night crew improvement
+training and scheduling at shaw's pharmacy.
+job inequality and morale
+nothing topic
+no change opinion
+employee feedback on store management
+pay inequality issues
+bad place
+pay disparity for long-term employees.
+double standards in management
+no labels
+great work environment
+happy employees supportive management
+collaborative work environment
+fair wages and improved morale
+work schedule issues
+minimum wage discontent
+blank documents topic
+no related documents found
+employee pay issues
+customer survey experience
+help needed front end
+no pay
+employee feedback
+new employee training and incentives
+no experience job
+employee issues and support.
+staffing crisis and corporate inaction
+happy workplace satisfaction
+job opportunities and performance
+money increase
+short label: "dance performance
+better training needed
+grocery store issues
+wish for better pay & recognition
+friendly coworkers experience
+compensation and employee training issues in retail
+communication issues in upper management
+store communication issues
+employee growth and expectations.
+employee experience and company dissatisfaction
+pay rate increase for part-time employees
+the label for this topic could be "pay raises" or "salary
+great store management
+pay and benefits issues
+lack of respect and support in workplace
+department staffing and hiring needs
+improve communication & sales processes
+workplace stress and flexibility
+uniforms and wages for retail employees.
+pay increase for loyal workers
+co-worker management issues
+manager recognition and understanding
+low grocery pay issues
+staffing issues and labor cuts
+job dissatisfaction and understaffing issues
+competitive pay comparisons
+shaws issues and improvements
+understaffed service desk
+smiling newbies
+pay and morale in stores
+satisfaction and long-term employment
+recognition and rewards for employees
+employee issues
+loyal employees' concerns
+shaws experience
+shaw's employee and customer concerns
+workers fairness and schedule efficiency
+positive store management
+employee compensation & hiring struggles
+produce department issues
+employee bonuses and incentives
+positive shaws experience with hiring concerns
+space and hiring improvements needed
+employee bathroom issues
+staff communication and hours
+green alternatives to plastic bags
+employee compensation and incentives
+jobs and supports for store employees
+store management & communication
+manager discrimination and support issues
+raise needed
+improved pay and wages
+cost of living and wages
+unfair recognition and standards
+topic not defined
+job frustration & understaffing issues
+pay equity and rewards
+wages and promises dispute
+part-time benefits issue
+pharmacy staffing and breaks
+unknown values
+team improvement
+negative
+departmental communication improvement
+scheduling and benefit issues
+workplace frustrations
+fair compensation
+front end retail issues
+topic label: "unknown topic
+workplace harassment
+environmental health concerns
+great company management
+unequal pay and staff treatment
+none at this time communication
+topic label
+family-centered store experience
+short staffed in the 60's
+workplace struggles
+job frustrations and treatment
+pharmacy technician pay raise.
+employee bonuses and appreciation
+bakery department struggles
+understaffed and hiring problems.
+job dissatisfaction and reduced hours.
+customer issues and store operations.
+pharmacy challenges and enjoyment
+food opportunities for all
+silence and opinions
+improved training program
+improved leave benefits
+company problems
+mixed workplace experience
+happy work environment.
+improving management communication
+pay and benefits dissatisfaction
+costly healthcare issues.
+mixed feelings
+broken store door complaints
+store management change needed
+better payments
+store training issues
+job wishing
+working experience at safeway
+benefit increases and pay issues.
+better pay needed
+employee concerns & management
+low wages & health concerns
+corporate inefficiency
+workplace hours and meetings
+store theft and customer policy.
+store experience
+woke policies and declining morale
+employee pay and recognition
+silence and hearing
+employee experience and training feedback
+cashier improvement suggestions
+nothing about anything
+communication
+unpredictable scheduling and low pay
+survey feedback and training
+information accessibility
+wage increase proposals
+mixed employee experiences
+bakery staffing & supply issues
+consistency in pay and vacation hours
+pharmacy issues and work environment
+job satisfaction and communication
+appreciated managers
+inadequate training programs
+toxic store director
+pay inequality and lack of recognition
+increased pay for assistant meat managers
+personal support & satisfaction
+living cost pay increase
+improve work communication
+corporate-store disconnect
+uncertain job progression
+management respect and communication
+employee concerns in deli management
+employee family
+communication issues in meat department.
+fair pay for long-term employees
+job performance and opportunities
+company morale issues
+pay increase needed
+staffing needs improvements in retail stores
+employee training and knowledge
+truck delays and unfair treatment in warehouse environment
+]
